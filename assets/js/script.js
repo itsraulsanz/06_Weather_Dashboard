@@ -44,10 +44,18 @@ $(".searchButton").click(function (event) {
     .then(function (weatherResponse) {
       console.log(weatherResponse);
       var day = weatherResponse.daily[0].dt;
+      var icon = weatherResponse.current.weather[0].icon;
       var temperature = weatherResponse.current.temp;
       var humidity = weatherResponse.current.humidity;
-      console.log(humidity);
-      weatherText.textContent = [("(" + day + ")") ,("Temperature: " + temperature + "°C") , ("Humidity: " + humidity + " %")];
+      var windSpeed = weatherResponse.current.wind_speed;
+      var uvi = weatherResponse.current.uvi;
+      var txtEl = document.createElement('txt')
+      txtEl.textContent = ("(" + day + ")");
+      cityText.appendChild(txtEl)
+      weatherText.textContent = [("(" + day + ")") ,("Temperature: " + temperature + "°C") , ("Humidity: " + humidity + " %"), ("Wind Speed: " + windSpeed + " MPH"), ("UV Index: " + uvi)];
+      var imgEl = document.createElement('img')
+      imgEl.setAttribute('src', 'http://openweathermap.org/img/wn/' + icon + '.png');
+      cityText.appendChild(imgEl)
     })
     .catch(function (error) {
       alert("Unable to connect to openweathermap");
