@@ -3,10 +3,15 @@ var containerEl = document.querySelector("#container");
 var localDataArray = localStorage.getItem("localDataArray");
 var arrOfData = JSON.parse(localDataArray);
 var API_KEY = "4be23710c7753951da2356832f750589";
+var weatherEl = document.querySelector("#weather");
+var cityText = document.querySelector('#cityText');
+var weatherText = document.querySelector('#weatherText');
+
 
 $(".searchButton").click(function (event) {
   event.preventDefault();
   var cityName = userCity.value.trim();
+  weatherEl.style.display = "block";
   //console.log(cityValue);
 
   fetch(
@@ -18,17 +23,19 @@ $(".searchButton").click(function (event) {
     .then(function (res) {
       return res.json();
     })
-    .then(function (reponse) {
-      console.log(reponse[0]);
-      var lat = reponse[0].lat;
-      var lon = reponse[0].lon;
+    .then(function (response) {
+      console.log(response[0]);
+      var lat = response[0].lat;
+      var lon = response[0].lon;
+      var cityResult = response[0].name;
+      cityText.textContent = cityResult;
       return fetch(
         "https://api.openweathermap.org/data/2.5/onecall?lat=" +
           lat +
           "&lon=" +
           lon +
           "&exclude=minutely,hourly&appid=" +
-          API_KEY
+          API_KEY + "&units=metric"
       );
     })
     .then(function (res) {
@@ -36,15 +43,13 @@ $(".searchButton").click(function (event) {
     })
     .then(function (weatherResponse) {
       console.log(weatherResponse);
+      var day = weatherResponse.daily[0].dt;
+      var temperature = weatherResponse.current.temp;
+      var humidity = weatherResponse.current.humidity;
+      console.log(humidity);
+      weatherText.textContent = [("(" + day + ")") ,("Temperature: " + temperature + "°C") , ("Humidity: " + humidity + " %")];
     })
     .catch(function (error) {
       alert("Unable to connect to openweathermap");
     });
 });
-
-// function displayCityWeather(cityWeather) {
-//   console.log(cityWeather);
-//   console.log(`City: ${cityWeather.city.name}`);
-// }
-
-//$("#repos-container .city").val(localStorage.getItem("city"));

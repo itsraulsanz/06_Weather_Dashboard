@@ -62,7 +62,6 @@
     color: var(--light);
   }
   
-  .delete-project-btn {
-    cursor: pointer;
+  #weather {
+    display: none;
   }
-  
