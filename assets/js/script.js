@@ -23,11 +23,11 @@ $(".searchButton").click(function (event) {
       .then(function (res) {
         return res.json();
       })
-      .then(function (response) {        
+      .then(function (response) {
         var lat = response[0].lat;
         var lon = response[0].lon;
-        cityResultName = response[0].name;        
-        
+        cityResultName = response[0].name;
+
         return fetch(
           "https://api.openweathermap.org/data/2.5/onecall?lat=" +
             lat +
@@ -43,11 +43,24 @@ $(".searchButton").click(function (event) {
       });
   }
 
+  function createIcon(iconName) {
+    var imgEl = document.createElement("img");
+    imgEl.setAttribute(
+      "src",
+      "http://openweathermap.org/img/wn/" + iconName + ".png"
+    );
+    return imgEl;
+  }
+
+  function formatUNIXDate(unixDate) {
+    return new Date(unixDate * 1000).toLocaleDateString();
+  }
+
   function printCityWeatherData(weatherResponse) {
     console.log(weatherResponse);
-    console.log({cityResultName});
+    console.log({ cityResultName });
     cityText.textContent = cityResultName;
-    var date = new Date(weatherResponse.daily[0].dt * 1000).toLocaleDateString();
+    var date = formatUNIXDate(weatherResponse.daily[0].dt);
     var icon = weatherResponse.current.weather[0].icon;
     var temperature = weatherResponse.current.temp;
     var humidity = weatherResponse.current.humidity;
@@ -62,25 +75,22 @@ $(".searchButton").click(function (event) {
       "Wind Speed: " + windSpeed + " MPH",
       "UV Index: " + uvi,
     ];
+
     cityText.appendChild(createIcon(icon));
 
+    for (var i = 0; i <= 4; i++) {
+      var dayForecastBox = document.createElement("div");
+      dayForecastBox.classList.add("dayForecastBox");
+      var dateEl = document.createElement("p");
+      dateEl.textContent = formatUNIXDate(weatherResponse.daily[i].dt);
+      dayForecastBox.appendChild(dateEl);
+      weatherEl.appendChild(dayForecastBox);
+    }
   }
 
-  function createIcon(iconName) {
-    var imgEl = document.createElement("img");
-    imgEl.setAttribute(
-      "src",
-      "http://openweathermap.org/img/wn/" + iconName + ".png"
-    );
-    return imgEl
-    ;
-  }
-
-
-  getOpenWeatherData()
-    .then(printCityWeatherData)
-    // .catch(function (error) {
-    //   console.log(error);
-    //   alert("Unable to connect to openweathermap");
-    // });
+  getOpenWeatherData().then(printCityWeatherData);
+  // .catch(function (error) {
+  //   console.log(error);
+  //   alert("Unable to connect to openweathermap");
+  // });
 });
