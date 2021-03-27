@@ -62,6 +62,52 @@
     color: var(--light);
   }
   
-  #weather {
-    display: none;
+  .currentWeather {
+    background-color: white;
+    border: solid grey 1px;
+    border-radius: 15px;
+    padding: 30px;
+    margin-bottom: 20px;
+  }
+
+  .currentWeatherTitle {
+    font-weight: 700;
+    font-size: 1.75rem;
+  }
+
+  .fiveDaysWeather {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .dayForecastBox {
+    background-color: var(--blue);
+    border: solid var(--darkblue) 1px;
+    border-radius: 15px;
+    padding: 10px;
+    color: white;
+  }
+
+  .currentDate {
+    margin: 0 10px 0 10px;
+  }
+
+  .currentWeather ul {
+    padding: 0;
+    margin: 0;
+  }
+
+  .currentWeather li {
+    list-style-type: none;
+    margin-bottom: 15px;
+  }
+
+  .dayForecastBox ul {
+    padding: 0;
+    margin: 0;
+  }
+
+  .currentWeather li {
+    list-style-type: none;
   }

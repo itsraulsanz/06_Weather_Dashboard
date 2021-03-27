@@ -1,16 +1,17 @@
-var userCity = document.querySelector("#city");
-var containerEl = document.querySelector("#container");
 var localDataArray = localStorage.getItem("localDataArray");
 var arrOfData = JSON.parse(localDataArray);
 var API_KEY = "4be23710c7753951da2356832f750589";
-var weatherEl = document.querySelector("#weather");
-var cityText = document.querySelector("#cityText");
-var weatherText = document.querySelector("#weatherText");
+var userCity = document.querySelector("#city");
+var containerEl = document.querySelector(".containerWeather");
+var currentWeatherEl = document.querySelector(".currentWeather");
+var fiveDaysWeatherEl = document.querySelector(".fiveDaysWeather");
+var currentWeatherTitle = document.querySelector(".currentWeatherTitle");
+var currentWeatherContent = document.querySelector(".currentWeatherContent");
 
 $(".searchButton").click(function (event) {
   event.preventDefault();
   var cityName = userCity.value.trim();
-  weatherEl.style.display = "block";
+  containerEl.style.display = "block";
   var cityResultName = "";
 
   function getOpenWeatherData() {
@@ -59,7 +60,7 @@ $(".searchButton").click(function (event) {
   function printCityWeatherData(weatherResponse) {
     console.log(weatherResponse);
     console.log({ cityResultName });
-    cityText.textContent = cityResultName;
+    currentWeatherTitle.textContent = cityResultName;
     var date = formatUNIXDate(weatherResponse.daily[0].dt);
     var icon = weatherResponse.current.weather[0].icon;
     var temperature = weatherResponse.current.temp;
@@ -67,24 +68,44 @@ $(".searchButton").click(function (event) {
     var windSpeed = weatherResponse.current.wind_speed;
     var uvi = weatherResponse.current.uvi;
     var txtEl = document.createElement("txt");
+    txtEl.classList.add("currentDate")
     txtEl.textContent = "(" + date + ")";
-    cityText.appendChild(txtEl);
-    weatherText.textContent = [
-      "Temperature: " + temperature + "°C",
-      "Humidity: " + humidity + " %",
-      "Wind Speed: " + windSpeed + " MPH",
-      "UV Index: " + uvi,
-    ];
+    currentWeatherTitle.appendChild(txtEl);
+    currentWeatherTitle.appendChild(createIcon(icon));
 
-    cityText.appendChild(createIcon(icon));
+    var currentWeatherTemp = document.createElement("li");
+    var currentWeatherHum = document.createElement("li");
+    var currentWeatherWind = document.createElement("li");
+    var currentWeatherUV = document.createElement("li");
+    currentWeatherTemp.textContent = "Temperature: " + temperature + "°C";
+    currentWeatherHum.textContent = "Humidity: " + humidity + " %";
+    currentWeatherWind.textContent = "Wind Speed: " + windSpeed + " MPH";
+    currentWeatherUV.textContent = "UV Index: " + uvi;
+    
+    console.log(currentWeatherTemp)
 
-    for (var i = 0; i <= 4; i++) {
+    currentWeatherContent.appendChild(currentWeatherTemp);
+    currentWeatherContent.appendChild(currentWeatherHum);
+    currentWeatherContent.appendChild(currentWeatherWind);
+    currentWeatherContent.appendChild(currentWeatherUV);
+
+    for (var i = 1; i <= 5; i++) {
       var dayForecastBox = document.createElement("div");
-      dayForecastBox.classList.add("dayForecastBox");
-      var dateEl = document.createElement("p");
-      dateEl.textContent = formatUNIXDate(weatherResponse.daily[i].dt);
-      dayForecastBox.appendChild(dateEl);
-      weatherEl.appendChild(dayForecastBox);
+      dayForecastBox.classList.add("dayForecastBox", "col-12", "col-md-2", "col-lg-2");
+      var dayForecastDateEl = document.createElement("h5");
+      var dayForecastList = document.createElement("ul");
+      var dayForecastListTemp = document.createElement("li");
+      var dayForecastListHum = document.createElement("li");
+      //console.log(weatherResponse.daily[i].weather[0].icon)
+      dayForecastDateEl.textContent = formatUNIXDate(weatherResponse.daily[i].dt);
+      dayForecastListTemp.textContent = "Temperature: " + weatherResponse.daily[i].temp.day + "°C";
+      dayForecastListHum.textContent = "Humidity: " + weatherResponse.daily[i].humidity + " %";
+      dayForecastBox.appendChild(dayForecastDateEl);
+      dayForecastBox.appendChild(createIcon(weatherResponse.daily[i].weather[0].icon));
+      dayForecastBox.appendChild(dayForecastList);
+      dayForecastList.appendChild(dayForecastListTemp);
+      dayForecastList.appendChild(dayForecastListHum);
+      fiveDaysWeatherEl.appendChild(dayForecastBox);
     }
   }
 
