@@ -13,6 +13,11 @@ body {
   color: var(--darkblue);
 }
 
+header {
+  margin: 0px;
+  padding: 0px;
+}
+
 h1,
 h2,
 h3,
@@ -47,14 +52,20 @@ thead {
   color: var(--darkblue);
 }
 
-.custom-btn {
-  background-color: var(--light);
-  color: var(--darkblue);
+.submit,
+.clearCityButton {
+  background-color: var(--darkblue);
+  color: #fff;
+  border-radius: 7px;
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out;
 }
 
-.custom-btn:hover {
-  background-color: var(--lightblue);
-  color: var(--darkblue);
+.submit:hover,
+.clearCityButton:hover {
+  background-color: var(--red);
 }
 
 .custom-table tbody {
@@ -62,31 +73,54 @@ thead {
   color: var(--light);
 }
 
+.aside {
+  margin-bottom: 20px;
+}
+
+.cityList {
+  padding: 0 1.25rem 1.25rem 1.25rem;
+}
+
+.cityList ul {
+  padding: 0;
+  margin: 0;
+  padding-bottom: 1.25rem;
+}
+
+.cityList li {
+  cursor: pointer;
+  list-style-type: none;
+  display: block;
+  width: 100%;
+  height: calc(1.5em + 0.75rem + 2px);
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.cityList li:hover {
+  background-color: var(--red);
+  color: white;
+}
+
 .currentWeather {
   background-color: white;
   border: solid grey 1px;
   border-radius: 15px;
   padding: 30px;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 }
 
 .currentWeatherTitle {
   font-weight: 700;
   font-size: 1.75rem;
-}
-
-.fiveDaysWeather {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-
-.dayForecastBox {
-  background-color: var(--blue);
-  border: solid var(--darkblue) 1px;
-  border-radius: 15px;
-  padding: 10px;
-  color: white;
 }
 
 .currentDate {
@@ -103,25 +137,32 @@ thead {
   margin-bottom: 15px;
 }
 
+.fiveDaysWeather {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.fiveDaysWeather h3 {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.dayForecastBox {
+  background-color: var(--blue);
+  border: solid var(--darkblue) 1px;
+  border-radius: 15px;
+  padding: 10px;
+  color: white;
+  flex-grow: 1;
+  margin: 0px 10px 10px 0;
+}
+
 .dayForecastBox ul {
   padding: 0;
   margin: 0;
 }
 
 .dayForecastBox li {
-  list-style-type: none;
-}
-
-.cityList {
-  padding: 0 1.25rem 1.25rem 1.25rem;
-}
-
-.cityList ul {
-  padding: 0;
-  margin: 0;
-  padding-bottom: 1.25rem;
-}
-
-.cityList li {
   list-style-type: none;
 }

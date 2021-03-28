@@ -11,18 +11,14 @@ var API_KEY = "4be23710c7753951da2356832f750589";
 
 function search(event) {
   var cityName;
-  console.log(event)
   event.preventDefault();
-  if(event.type === "load"){
-    console.log("load", event.type)
+  if (event.type === "load") {
     var cityList = JSON.parse(localStorage.getItem("cityList")) || [];
-    if(cityList.length === 0){
+    if (cityList.length === 0) {
       return;
     }
-    console.log(cityList[cityList.length - 1].city)
     cityName = cityList[cityList.length - 1].city;
   } else {
-
     var cityName = userCity.value.trim();
     var cityResultName = "";
   }
@@ -32,13 +28,16 @@ function search(event) {
 
   function saveUserCity(city) {
     var userCity = {
-      city: city,
+      city: city.toUpperCase(),
     };
     var cityList = JSON.parse(localStorage.getItem("cityList")) || [];
 
     var shouldBeAdded = true;
     for (var i = 0; i < cityList.length; i++) {
-      if (cityList[i].city.toLowerCase() === city.toLowerCase() || city.length === 0 ) {
+      if (
+        cityList[i].city.toLowerCase() === city.toLowerCase() ||
+        city.length === 0
+      ) {
         shouldBeAdded = false;
       }
     }
@@ -65,7 +64,7 @@ function search(event) {
       //var a = document.createElement("a");
       li.textContent = cityList[i].city;
       li.addEventListener("click", function (event) {
-        console.log(event.target.textContent);
+        //console.log(event.target.textContent);
         getOpenWeatherData(event.target.textContent);
       });
       //a.href = "#";
@@ -75,6 +74,7 @@ function search(event) {
 
     // clear City search
     var clearCityButton = document.createElement("button");
+    clearCityButton.classList.add("clearCityButton");
     clearCityButton.textContent = "Clear the search list";
     cityListEl.appendChild(clearCityButton);
 
@@ -85,7 +85,6 @@ function search(event) {
   }
 
   function getOpenWeatherData(city) {
-    console.log("called", city);
     fetch(
       "http://api.openweathermap.org/geo/1.0/direct?q=" +
         city +
@@ -93,7 +92,6 @@ function search(event) {
         API_KEY
     )
       .then(function (res) {
-        console.log(res);
         return res.json();
       })
       .then(function (response) {
@@ -133,9 +131,6 @@ function search(event) {
   }
 
   function printCityWeatherData(weatherResponse) {
-    //console.log(weatherResponse);
-    //console.log({ cityResultName });
-
     currentWeatherTitle.textContent = cityResultName;
     var date = formatUNIXDate(weatherResponse.daily[0].dt);
     var icon = weatherResponse.current.weather[0].icon;
@@ -163,19 +158,17 @@ function search(event) {
     currentWeatherContent.appendChild(currentWeatherWind);
     currentWeatherContent.appendChild(currentWeatherUV);
     fiveDaysWeatherEl.innerHTML = "";
+    var dayForecastTitleEl = document.createElement("h3");
+    dayForecastTitleEl.textContent = "5-Day Forecast";
+    fiveDaysWeatherEl.appendChild(dayForecastTitleEl);
     for (var i = 1; i <= 5; i++) {
       var dayForecastBox = document.createElement("div");
-      dayForecastBox.classList.add(
-        "dayForecastBox",
-        "col-12",
-        "col-md-2",
-        "col-lg-2"
-      );
-      var dayForecastDateEl = document.createElement("h5");
+      dayForecastBox.classList.add("dayForecastBox");
+      var dayForecastDateEl = document.createElement("h6");
       var dayForecastList = document.createElement("ul");
       var dayForecastListTemp = document.createElement("li");
       var dayForecastListHum = document.createElement("li");
-      //console.log(weatherResponse.daily[i].weather[0].icon)
+
       dayForecastDateEl.textContent = formatUNIXDate(
         weatherResponse.daily[i].dt
       );
@@ -183,6 +176,7 @@ function search(event) {
         "Temperature: " + weatherResponse.daily[i].temp.day + "°C";
       dayForecastListHum.textContent =
         "Humidity: " + weatherResponse.daily[i].humidity + " %";
+
       dayForecastBox.appendChild(dayForecastDateEl);
       dayForecastBox.appendChild(
         createIcon(weatherResponse.daily[i].weather[0].icon)
@@ -195,16 +189,12 @@ function search(event) {
   }
 
   getOpenWeatherData(cityName);
-  // .catch(function (error) {
-  //   console.log(error);
-  //   alert("Unable to connect to openweathermap");
-  // });
 }
 
-formEl.addEventListener("submit",(event) => {
-  search(event)
-} );
+formEl.addEventListener("submit", (event) => {
+  search(event);
+});
 
 window.addEventListener("load", (event) => {
-  search(event)
-})
+  search(event);
+});
