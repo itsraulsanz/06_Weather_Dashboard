@@ -29,6 +29,6 @@ The following image shows the web application's appearance and functionality:
 
 ## Deployed Application
 
-Website URL: <a href="https://itsraulsanz.github.io/plan-your-day/">https://itsraulsanz.github.io/plan-your-day/</a>
+Website URL: <a href="https://itsraulsanz.github.io/weather-forecast/">https://itsraulsanz.github.io/weather-forecast/</a>
 
 <img src="./assets/images/screenshot.png">
