@@ -1,12 +1,13 @@
-var localDataArray = localStorage.getItem("localDataArray");
-var arrOfData = JSON.parse(localDataArray);
 var API_KEY = "4be23710c7753951da2356832f750589";
+var asideCities = document.querySelector(".aside");
 var userCity = document.querySelector("#city");
+var cityListEl = document.querySelector(".cityList");
 var containerEl = document.querySelector(".containerWeather");
 var currentWeatherEl = document.querySelector(".currentWeather");
 var fiveDaysWeatherEl = document.querySelector(".fiveDaysWeather");
 var currentWeatherTitle = document.querySelector(".currentWeatherTitle");
 var currentWeatherContent = document.querySelector(".currentWeatherContent");
+
 
 $(".searchButton").click(function (event) {
   event.preventDefault();
@@ -14,12 +15,53 @@ $(".searchButton").click(function (event) {
   containerEl.style.display = "block";
   var cityResultName = "";
 
+  saveUserCity(userCity.value);
+  renderCities();
+
+  function saveUserCity(city) {
+    var userCity = {
+      city: city
+    };
+    var cityList = JSON.parse(window.localStorage.getItem("cityList")) || [];
+  
+    cityList.push(userCity);
+  
+    window.localStorage.setItem("cityList", JSON.stringify(cityList));
+  }
+  
+  // Showing the cityList
+  function renderCities() {
+    cityListEl.style.display = "block";
+  
+    var userCityList = document.createElement("ul");
+  
+    cityListEl.appendChild(userCityList);
+    
+    var cityList = JSON.parse(window.localStorage.getItem("cityList")) || [];
+  
+    for (let i = 0; i < cityList.length; i++) {
+      var li = document.createElement("li");
+      li.textContent = cityList[i].city;
+      userCityList.appendChild(li);
+    }
+  
+    // clear City search
+    var clearCityButton = document.createElement("button");
+    clearCityButton.textContent = "Clear the search list";
+    cityListEl.appendChild(clearCityButton);
+  
+    clearCityButton.addEventListener("click", function () {
+      localStorage.clear();
+      cityListEl.innerHTML = "";
+    });
+  }
+
   function getOpenWeatherData() {
     return fetch(
       "http://api.openweathermap.org/geo/1.0/direct?q=" +
-        cityName +
-        "&limit=1&appid=" +
-        API_KEY
+      cityName +
+      "&limit=1&appid=" +
+      API_KEY
     )
       .then(function (res) {
         return res.json();
@@ -31,12 +73,12 @@ $(".searchButton").click(function (event) {
 
         return fetch(
           "https://api.openweathermap.org/data/2.5/onecall?lat=" +
-            lat +
-            "&lon=" +
-            lon +
-            "&exclude=minutely,hourly&appid=" +
-            API_KEY +
-            "&units=metric"
+          lat +
+          "&lon=" +
+          lon +
+          "&exclude=minutely,hourly&appid=" +
+          API_KEY +
+          "&units=metric"
         );
       })
       .then(function (res) {
@@ -59,7 +101,7 @@ $(".searchButton").click(function (event) {
 
   function printCityWeatherData(weatherResponse) {
     console.log(weatherResponse);
-    console.log({ cityResultName });
+    //console.log({ cityResultName });
     currentWeatherTitle.textContent = cityResultName;
     var date = formatUNIXDate(weatherResponse.daily[0].dt);
     var icon = weatherResponse.current.weather[0].icon;
@@ -68,7 +110,7 @@ $(".searchButton").click(function (event) {
     var windSpeed = weatherResponse.current.wind_speed;
     var uvi = weatherResponse.current.uvi;
     var txtEl = document.createElement("txt");
-    txtEl.classList.add("currentDate")
+    txtEl.classList.add("currentDate");
     txtEl.textContent = "(" + date + ")";
     currentWeatherTitle.appendChild(txtEl);
     currentWeatherTitle.appendChild(createIcon(icon));
@@ -81,8 +123,8 @@ $(".searchButton").click(function (event) {
     currentWeatherHum.textContent = "Humidity: " + humidity + " %";
     currentWeatherWind.textContent = "Wind Speed: " + windSpeed + " MPH";
     currentWeatherUV.textContent = "UV Index: " + uvi;
-    
-    console.log(currentWeatherTemp)
+
+    //console.log(currentWeatherTemp);
 
     currentWeatherContent.appendChild(currentWeatherTemp);
     currentWeatherContent.appendChild(currentWeatherHum);
@@ -91,17 +133,28 @@ $(".searchButton").click(function (event) {
 
     for (var i = 1; i <= 5; i++) {
       var dayForecastBox = document.createElement("div");
-      dayForecastBox.classList.add("dayForecastBox", "col-12", "col-md-2", "col-lg-2");
+      dayForecastBox.classList.add(
+        "dayForecastBox",
+        "col-12",
+        "col-md-2",
+        "col-lg-2"
+      );
       var dayForecastDateEl = document.createElement("h5");
       var dayForecastList = document.createElement("ul");
       var dayForecastListTemp = document.createElement("li");
       var dayForecastListHum = document.createElement("li");
       //console.log(weatherResponse.daily[i].weather[0].icon)
-      dayForecastDateEl.textContent = formatUNIXDate(weatherResponse.daily[i].dt);
-      dayForecastListTemp.textContent = "Temperature: " + weatherResponse.daily[i].temp.day + "°C";
-      dayForecastListHum.textContent = "Humidity: " + weatherResponse.daily[i].humidity + " %";
+      dayForecastDateEl.textContent = formatUNIXDate(
+        weatherResponse.daily[i].dt
+      );
+      dayForecastListTemp.textContent =
+        "Temperature: " + weatherResponse.daily[i].temp.day + "°C";
+      dayForecastListHum.textContent =
+        "Humidity: " + weatherResponse.daily[i].humidity + " %";
       dayForecastBox.appendChild(dayForecastDateEl);
-      dayForecastBox.appendChild(createIcon(weatherResponse.daily[i].weather[0].icon));
+      dayForecastBox.appendChild(
+        createIcon(weatherResponse.daily[i].weather[0].icon)
+      );
       dayForecastBox.appendChild(dayForecastList);
       dayForecastList.appendChild(dayForecastListTemp);
       dayForecastList.appendChild(dayForecastListHum);
