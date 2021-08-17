@@ -9,7 +9,7 @@
 ## Table of Contents
 
 - [Description](#description)
-- [Technologies](#technologies)
+- [Technologies Used](#technologies)
 - [Contributing](#contributing)
 - [Questions](#questions)
 - [Screenshot](#screenshot)
@@ -21,7 +21,7 @@
 This repository contains a weather outlook for multiple cities that shows the current and the weather for the next 5 days.
 It's built using [OpenWeather API] to retrieve weather data for cities.
 
-## Technologies Used
+## Technologies
 
 - [OpenWeather API](https://openweathermap.org/api) Third-party API to retrieve weather data for cities 
 
