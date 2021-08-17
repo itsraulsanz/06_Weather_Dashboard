@@ -4,7 +4,7 @@
 
 ## Deployment
 
-- Deployed App: [Heroku](https://itsraulsanz.github.io/weather-forecast/)
+- Deployed App: [https://itsraulsanz.github.io/weather-forecast/](https://itsraulsanz.github.io/weather-forecast/)
 
 ## Table of Contents
 
