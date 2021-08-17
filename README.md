@@ -9,7 +9,7 @@
 ## Table of Contents
 
 - [Description](#description)
-- [Technologies Used](#technologies)
+- [Technologies](#technologies)
 - [Contributing](#contributing)
 - [Questions](#questions)
 - [Screenshot](#screenshot)
